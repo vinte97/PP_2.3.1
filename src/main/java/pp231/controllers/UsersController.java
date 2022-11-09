@@ -3,10 +3,9 @@ package pp231.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pp231.dao.UserDAO;
+import pp231.models.User;
 
 @Controller
 @RequestMapping("/users")
@@ -30,5 +29,16 @@ public class UsersController {
         model.addAttribute("user", userDAO.show(id));
         return "users/show";
     }
+
+    @GetMapping("/new")
+    public String newUser(@ModelAttribute("user") User user) {
+        return "users/new";
+    }
+    @PostMapping()
+    public String createUser(@ModelAttribute("user") User user) {
+        userDAO.save(user);
+        return "redirect:/users";
+    }
+
 
 }
