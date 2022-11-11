@@ -27,8 +27,8 @@ public class UsersController {
         return "users/list";
     }
 
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/show")
+    public String show(@RequestParam(name = "id") long id, Model model) {
         model.addAttribute("user", userDAO.getUserByUd(id));
         return "users/show";
     }
@@ -46,14 +46,14 @@ public class UsersController {
         return "redirect:/users";
     }
 
-    @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
+    @GetMapping("/edit")
+    public String edit(Model model, @RequestParam(name = "id") long id) {
         model.addAttribute("user", userDAO.getUserByUd(id));
         return "users/editUser";
     }
 
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/update")
     public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "users/editUser";
@@ -62,8 +62,8 @@ public class UsersController {
         return "redirect:/users";
     }
 
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") long id) {
+    @DeleteMapping("/delete")
+    public String delete(@RequestParam(name = "id") long id) {
         userDAO.deleteUser(id);
         return "redirect:/users";
     }

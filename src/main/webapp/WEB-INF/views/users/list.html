@@ -13,7 +13,7 @@
     </thead>
     <tr th:each="user: ${users}">
       <td >
-        <a th:href = "@{/users/{id}(id = ${user.getId()})}" th:text="${user.getId()}"></a>
+        <a th:href = "@{/users/show(id = ${user.getId()})}" th:text="${user.getId()}"></a>
       </td>
       <td th:text="${user.getName()}"></td>
       <td th:text="${user.getAge()}"></td>
