@@ -1,43 +1,37 @@
 package pp231.dao;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pp231.models.User;
 
-import javax.persistence.TypedQuery;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Component
+@Transactional
 public class UserDAO {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
-    @Transactional(readOnly = true)
-    public List<User> index() {
-        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");
-        return query.getResultList();
+    public List<User> showAllUsers() {
+        return entityManager.createQuery("select u from User u", User.class).getResultList();
     }
 
-//    public User show(int id) {
-//        return users.stream().filter(users -> users.getId() == id).findAny().orElse(null);
-//    }
-//
+    public User getUserByUd(long id) {
+        return entityManager.find(User.class, id);
+    }
+
     public void save(User user) {
-        sessionFactory.openSession().save(user);
+        entityManager.persist(user);
     }
-//
-//    public void update(int id, User user) {
-//        User userToUpdate = show(id);
-//        userToUpdate.setAge(user.getAge());
-//        userToUpdate.setName(user.getName());
-//
-//    }
-//
-//    public void deleteUser(int id) {
-//        users.removeIf(user -> user.getId() == id);
-//    }
+    public void update(User user) {
+        entityManager.merge(user);
+    }
+
+    public void deleteUser(long id) {
+        entityManager.remove(getUserByUd(id));
+    }
 }

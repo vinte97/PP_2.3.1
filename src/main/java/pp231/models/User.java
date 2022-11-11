@@ -1,6 +1,8 @@
 package pp231.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Entity
 @Table(name = "users")
@@ -14,7 +16,10 @@ public class User {
     @Column(name = "name")
     private String name;
 
+
     @Column(name = "age")
+    @Min(value = 0, message = "Вы ввели отрицательный возраст")
+    @Max(value = 122, message = "Рекорд 122 года. Я думаю вы моложе")
     private int age;
 
     public User(int id, String name, int age) {
